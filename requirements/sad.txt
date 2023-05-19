@@ -1,3 +1,0 @@
-pyannote.core
-pyannote.metrics                                                                               
-pandas      
