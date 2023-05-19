@@ -2,6 +2,8 @@
 # Installation script for Kaldi.
 set -e
 
+export CUDA_HOME=/opt/ohpc/pub/cuda/11.1
+export MKL_ROOT=/opt/intel/oneapi/mkl
 
 #######################
 # Config
@@ -15,13 +17,9 @@ NJOBS=20  # Number of parallel jobs for make.
 KALDI_GIT=https://github.com/kaldi-asr/kaldi
 SCRIPT_DIR=$(realpath $(dirname "$0"))
 KALDI_DIR=$SCRIPT_DIR/kaldi
-KALDI_REVISION=76a97983a
 
 if [ ! -d $KALDI_DIR ]; then
     git clone $KALDI_GIT $KALDI_DIR
-    cd $KALDI_DIR
-    git checkout $KALDI_REVISION
-    cd ..
 fi
 
 
@@ -37,14 +35,14 @@ if [ ! -f install.succeeded ]; then
     # Compile.
     make -j $NJOBS
 
-    # Compile OpenBLAS. For some reason the default install script doesn't put
-    # components in the places expected by src/configure, so move some things
-    # around.
-    extras/install_openblas.sh
-    mkdir OpenBLAS/lib
-    mv OpenBLAS/*.so OpenBLAS/lib
-    mkdir OpenBLAS/include
-    cp OpenBLAS/*.h OpenBLAS/include
+    # # Compile OpenBLAS. For some reason the default install script doesn't put
+    # # components in the places expected by src/configure, so move some things
+    # # around.
+    # extras/install_openblas.sh
+    # mkdir OpenBLAS/lib
+    # mv OpenBLAS/*.so OpenBLAS/lib
+    # mkdir OpenBLAS/include
+    # cp OpenBLAS/*.h OpenBLAS/include
 
     touch install.succeeded
 

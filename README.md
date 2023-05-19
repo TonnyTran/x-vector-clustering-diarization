@@ -62,6 +62,12 @@ cd tools
 ./install_dscore.sh
 cd ..
 ```
+Note: we can indentify CUDA_HOME and MKL_ROOT while install kaldi, otherwise these parameters are set by default. (CUDA_HOME=/usr/local/cuda, MKL_ROOT=/opt/intel/mkl)
+```bash
+export CUDA_HOME=/opt/ohpc/pub/cuda/11.1
+export MKL_ROOT=/opt/intel/oneapi/mkl
+```
+
 
 Please check the output of these scripts to ensure that installation has succeeded. If succesful, you should see ``Successfully installed {Kaldi,dscore}.`` printed at the end. If installation of a component fails, please consult the output of the relevant installation script for additional details.
 

@@ -23,21 +23,18 @@ vb_hmm_stage=0
 # - pyannote.core
 # - pyannote.metrics
 # - pandas
-eval_sad=false
-
-
+eval_sad=true
 
 ################################################################################
 # Paths to DIHARD III releases
 ################################################################################
-DIHARD_DEV_DIR=/data/working/nryant/dihard3/delivery/builds/LDC2020E12_Third_DIHARD_Challenge_Development_Data
-DIHARD_EVAL_DIR=/data/working/nryant/dihard3/delivery/builds/LDC2021E02_Third_DIHARD_Challenge_Evaluation_Data_Complete
+DIHARD_DEV_DIR=/home3/theanhtran/corpus/DIHARD/DIHARD3/third_dihard_challenge_dev
+DIHARD_EVAL_DIR=/home3/theanhtran/corpus/DIHARD/DIHARD3/third_dihard_challenge_eval
 
 
 . ./utils/parse_options.sh
 . ./cmd.sh
 . ./path.sh
-
 
 
 ################################################################################
