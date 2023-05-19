@@ -34,34 +34,23 @@ Clone the repo:
 ```bash
 git clone https://github.com/TonnyTran/x-vector-clustering-diarization.git
 cd x-vector-clustering-diarization
-
 ```
 
-While not required, we recommend running the recipes from a fresh virtual environment. If using ``virtualenv``:
+
+Using conda to create a fresh virtual environment, and activate it:
 
 ```bash
-virtualenv venv
-source venv/bin/activate
+conda create -n baseline python=3.9
+conda activate baseline
 ```
-
-Alternately, you could use ``conda`` or ``pipenv``. Make sure to activate the environment before proceeding.
-
-
 
 ## Step 2: Installing Python dependencies
 
 Run the following command to install the required Python packages:
 
 ```bash
-pip install -r requirements/core.txt
+pip install -r requirements.txt
 ```
-
-If you intend to enable [detailed scoring for SAD output](#sad-scoring) in the track 2 recipe, you will also need to install the ``pandas``, ``pyannote.core``, and ``pyannote.metrics`` packages:
-
-```bash
-pip install -r requirements/sad.txt
-```
-
 
 ## Step 3: Installing remaining dependencies
 
@@ -79,168 +68,13 @@ Please check the output of these scripts to ensure that installation has succeed
 
 
 
-# Running the baseline recipes
+# Running the baseline
 
-We include full recipes for reproducing the baseline results for both DIHARD III tracks:
-
-- **Track 1**  —  Diarization using reference SAD.
+The package includes the code of:
 - **Track 2**  —  Diarization from scratch (i.e., using system produced SAD).
-
-These recipes are located under the ``recipes/`` directory, which has the following structure:
-
-- ``track1/``  --  recipe for track 1
-- ``track2/``  --  recipe for track 2 with SAD performed from original source audio
-
-
-## Running the Track 1 recipe
-
-To replicate the results for track 1, switch to ``recipes/track1/``:
-
-```bash
-cd recipes/track1
-```
-
-and open ``run.sh`` in a text editor. The first section of this script defines paths to the official DIHARD III DEV and EVAL releases and should look something like the following:
-
-```bash
-################################################################################
-# Paths to DIHARD III releases
-################################################################################
-DIHARD_DEV_DIR=/data/working/nryant/dihard3/delivery/builds/LDC2020E12_Third_DIHARD_Challenge_Development_Data
-DIHARD_EVAL_DIR=/data/working/nryant/dihard3/delivery/builds/LDC2021E02_Third_DIHARD_Challenge_Evaluation_Data_Complete
-```
-
-Change the variables ``DIHARD_DEV_DIR`` and ``DIHARD_EVAL_DIR`` so that they point to the roots of the DIHARD III DEV and EVAL releases on your filesystem. Save your changes, exit the editor, and run:
-
-```bash
-./run.sh
-```
-
-This will run the baseline, printing status updates to STDOUT with the first few lines of output resembling:
-
-```bash
-./run.sh: Preparing data directories...
-./utils/validate_data_dir.sh: Successfully validated data-directory data/dihard3_dev/
-./utils/validate_data_dir.sh: Successfully validated data-directory data/dihard3_eval/
-./run.sh: Performing first-pass diarization of DEV...
-local/diarize.sh: Extracting MFCCs....
-steps/make_mfcc.sh --nj 40 --cmd run.pl --write-utt2num-frames true --mfcc-config conf/mfcc.conf data/dihard3_dev/ exp/make_mfcc/dihard3_dev exp/make_mfcc/dihard3_dev
-utils/validate_data_dir.sh: Successfully validated data-directory data/dihard3_dev/
-steps/make_mfcc.sh [info]: segments file exists: using that.
-steps/make_mfcc.sh: It seems not all of the feature files were successfully procesed (39457 != 39743); consider using utils/fix_data_dir.sh data/dihard3_dev/
-steps/make_mfcc.sh: Succeeded creating MFCC features for dihard3_dev
-local/diarize.sh: Preparing features for x-vector extractor...
-local/nnet3/xvector/prepare_feats.sh --nj 40 --cmd run.pl data/dihard3_dev data/dihard3_dev_cmn exp/make_mfcc/dihard3_dev_cmn/
-** split_data.sh: warning, #lines is (utt2spk,feats.scp) is (39743,39457); you can
-**  use utils/fix_data_dir.sh data/dihard3_dev to fix this.
-local/nnet3/xvector/prepare_feats.sh: Succeeded creating xvector features for dihard3_dev
-local/diarize.sh: segments found; copying it
-fix_data_dir.sh: kept 39457 utterances out of 39743
-fix_data_dir.sh: old files are kept in data/dihard3_dev_cmn/.backup
-local/diarize.sh: Extracting x-vectors..
-```
-
-If any stage fails, the script will immediately exit with status 1.
-
-
-### RTTM files
-
-Following the initial AHC segmentation step, RTTM files for the DEV set are written to:
-
-    exp/dihard3_diarization_nnet_1a_dev/per_file_rttm
-
-This directory will contain one RTTM for each recording in the DIHARD III DEV set; e.g.:
-
-```bash
-ls exp/dihard3_diarization_nnet_1a_dev/per_file_rttm/*.rttm | head
-exp/dihard3_diarization_nnet_1a_dev/per_file_rttm/DH_DEV_0001.rttm
-exp/dihard3_diarization_nnet_1a_dev/per_file_rttm/DH_DEV_0002.rttm
-exp/dihard3_diarization_nnet_1a_dev/per_file_rttm/DH_DEV_0003.rttm
-exp/dihard3_diarization_nnet_1a_dev/per_file_rttm/DH_DEV_0004.rttm
-exp/dihard3_diarization_nnet_1a_dev/per_file_rttm/DH_DEV_0005.rttm
-exp/dihard3_diarization_nnet_1a_dev/per_file_rttm/DH_DEV_0006.rttm
-exp/dihard3_diarization_nnet_1a_dev/per_file_rttm/DH_DEV_0007.rttm
-exp/dihard3_diarization_nnet_1a_dev/per_file_rttm/DH_DEV_0008.rttm
-exp/dihard3_diarization_nnet_1a_dev/per_file_rttm/DH_DEV_0009.rttm
-exp/dihard3_diarization_nnet_1a_dev/per_file_rttm/DH_DEV_0010.rttm
-
-ls exp/dihard3_diarization_nnet_1a_dev/per_file_rttm/*.rttm | wc -l
-254
-```
-
-Similarly, RTTM files for the EVAL set are written to:
-
-    exp/dihard3_diarization_nnet_1a_eval/per_file_rttm
-
-RTTM files will also be output after the VB-HMM resegmentation step, this time to:
-
-- ``exp/dihard3_diarization_nnet_1a_vbhmm_dev/per_file_rttm``
-- ``exp/dihard3_diarization_nnet_1a_vbhmm_eval/per_file_rttm``
-
-
-### Scoring
-
-DER and JER on the DEV set for the output of the AHC step will be printed to STDOUT:
-
-```bash
-./run.sh: Scoring first-pass diarization on DEV...
-local/diarization/score_diarization.sh: ******* SCORING RESULTS *******
-local/diarization/score_diarization.sh: *** DER (full): 20.71
-local/diarization/score_diarization.sh: *** JER (full): 42.44
-local/diarization/score_diarization.sh: *** DER (core): 21.05
-local/diarization/score_diarization.sh: *** JER (core): 46.34
-local/diarization/score_diarization.sh: ***
-local/diarization/score_diarization.sh: *** Full results are located at: exp/dihard3_diarization_nnet_1a_dev/scoring
-./run.sh: Scoring first-pass diarization on EVAL...
-local/diarization/score_diarization.sh: ******* SCORING RESULTS *******
-local/diarization/score_diarization.sh: *** DER (full): 20.75
-local/diarization/score_diarization.sh: *** JER (full): 43.31
-local/diarization/score_diarization.sh: *** DER (core): 21.66
-local/diarization/score_diarization.sh: *** JER (core): 48.10
-local/diarization/score_diarization.sh: ***
-local/diarization/score_diarization.sh: *** Full results are located at: exp/dihard3_diarization_nnet_1a_eval/scoring
-```
-
-These scores are extracted from the original ``dscore`` logs, which are output to ``exp/dihard3_diarization_nnet_1a_dev/scoring``, which has the following structure:
-
-- ``scoring/metrics_core.stdout``  --  output to STDOUT of ``dscore`` for CORE DEV set
-- ``scoring/metrics_core.stderr``  --  output to STDERR of ``dscore`` for CORE DEV set
-- ``scoring/metrics_full.stdout``  --  output to STDOUT of ``dscore`` for FULL DEV set
-- ``scoring/metrics_full.stderr``  --  output to STDERR of ``dscore`` for FULL DEV set
-
-
-Following VB-HMM resegmentation, DER and JER  for the DEV set are again printed to STDOUT:
-
-```bash
-./run.sh: Scoring VB-HMM resegmentation on DEV...
-local/diarization/score_diarization.sh: ******* SCORING RESULTS *******
-local/diarization/score_diarization.sh: *** DER (full): 19.41
-local/diarization/score_diarization.sh: *** JER (full): 41.66
-local/diarization/score_diarization.sh: *** DER (core): 20.25
-local/diarization/score_diarization.sh: *** JER (core): 46.02
-local/diarization/score_diarization.sh: ***
-local/diarization/score_diarization.sh: *** Full results are located at: exp/dihard3_diarization_nnet_1a_vbhmm_dev/scoring
-./run.sh: Scoring VB-HMM resegmentation on EVAL...
-local/diarization/score_diarization.sh: ******* SCORING RESULTS *******
-local/diarization/score_diarization.sh: *** DER (full): 19.25
-local/diarization/score_diarization.sh: *** JER (full): 42.45
-local/diarization/score_diarization.sh: *** DER (core): 20.65
-local/diarization/score_diarization.sh: *** JER (core): 47.74
-local/diarization/score_diarization.sh: ***
-local/diarization/score_diarization.sh: *** Full results are located at: exp/dihard3_diarization_nnet_1a_vbhmm_eval/scoring
-```
-
-and detailed results written to ``exp/dihard3_diarization_nnet_1a_vbhmm_dev/scoring``.
-
-
-### Running on a grid
-
-**NOTE** that by default the Kaldi scripts are configured for execution on a single machine. To run on a grid using a submission engine such as SGE or Slurm, make sure to edit ``recipes/track{1,2}/cmd.sh`` accordingly.
 
 
 ## Running the Track 2 recipe
-
-The track 2 recipe is almost identical to the track 1 recipe, except that it begins by training a SAD model on the DIHARD III DEV set, which it then uses to segment both the DEV and EVAL data. This SAD output will then be used by the diarization system in lieu of the reference SAD that was used for track 1.
 
 To run the recipe, switch to ``recipes/track2/``:
 

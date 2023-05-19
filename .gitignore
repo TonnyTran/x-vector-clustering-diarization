@@ -137,6 +137,7 @@ dmypy.json
 # Kaldi recipes.
 tools/dscore/
 tools/kaldi/
-data/
-exp/
-mfcc/
+recipes/track2/data/
+recipes/track2/mfcc/
+recipes/track2/exp/
+recipes/track2/log/
