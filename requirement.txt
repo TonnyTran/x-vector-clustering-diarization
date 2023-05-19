@@ -1,0 +1,9 @@
+numpy
+scipy
+numexpr
+intervaltree
+tabulate
+kaldi_io
+pyannote.core
+pyannote.metrics
+pandas

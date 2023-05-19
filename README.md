@@ -1,20 +1,3 @@
-Implementation of diarization baseline for the [Third DIHARD Speech Diarization Challenge (DIHARD III)](https://dihardchallenge.github.io/dihard3/). The baseline is based on [LEAP Lab's](http://leap.ee.iisc.ac.in/) submission to [DIHARD II](https://dihardchallenge.github.io/dihard2/):
-
-- Singh, Prachi, et. al. (2019). "LEAP Diarization System for Second DIHARD Challenge." Proceedings of INTERSPEECH 2019.
-  ([paper](http://leap.ee.iisc.ac.in/navigation/publications/papers/DIHARD_2019_challenge_Prachi.pdf))
-
-
-The x-vector extractor, PLDA model, UBM-GMM, and total variability matrix were trained on [VoxCeleb I and II](http://www.robots.ox.ac.uk/~vgg/data/voxceleb/). Prior
-to PLDA scoring and clustering, the x-vectors are centered and whitened using statistics estimated from the DIHARD III development and evaluation sets.
-
-For further details about the training pipeline, please consult the companion paper to the challenge:
-
-- Ryant, Neville et al. (2020). "The Third DIHARD Diarization Challenge."
-  ([paper](http://arxiv.org/abs/2012.01477))
-
-
-
-
 # Overview
 
 - [Prerequisites](#prerequisites)
@@ -35,16 +18,11 @@ The following packages are required to run the baseline.
 - [dscore](https://github.com/nryant/dscore)
 
 
-Additionally, you will need to obtain the relevant data releases from [LDC](https://www.ldc.upenn.edu/):
+Dataset:
 
 - DIHARD III development set (**LDC2020E12**)
 
 - DIHARD III evaluation set (**LDC2021E02**)
-
-
-For instructions on obtaining these sets, please consult the [DIHARD III website](https://dihardchallenge.github.io/dihard3/).
-
-
 
 
 # Installation
@@ -54,8 +32,9 @@ For instructions on obtaining these sets, please consult the [DIHARD III website
 Clone the repo:
 
 ```bash
-git clone https://github.com/dihardchallenge/dihard3_baseline.git
-cd dihard3_baseline
+git clone https://github.com/TonnyTran/x-vector-clustering-diarization.git
+cd x-vector-clustering-diarization
+
 ```
 
 While not required, we recommend running the recipes from a fresh virtual environment. If using ``virtualenv``:
