@@ -50,16 +50,7 @@ rttm_dir=$2
 # Create temp directory for dscore outputs.
 tmpdir=$(mktemp -d -t dh3-dscore-XXXXXXXX)
 
-# Score FULL test set.
-score.py \
-  --collar $collar --step $step \
-  -u $release_dir/data/uem_scoring/full/all.uem \
-  -r $release_dir/data/rttm/*.rttm \
-  -s $rttm_dir/*.rttm \
-  >  $tmpdir/metrics_full.stdout \
-  2> $tmpdir/metrics_full.stderr
-
-
+echo "usage: $0 score CORE set"
 # Score CORE test set.
 score.py \
   -u $release_dir/data/uem_scoring/core/all.uem \
@@ -67,23 +58,129 @@ score.py \
   -s $rttm_dir/*.rttm \
   >  $tmpdir/metrics_core.stdout \
   2> $tmpdir/metrics_core.stderr
+core_der=$(grep OVERALL $tmpdir/metrics_core.stdout | awk '{print $4}')
+
+# Score CORE audiobooks set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/audiobooks.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_audiobooks.stdout \
+  2> $tmpdir/metrics_audiobooks.stderr
+audiobooks_der=$(grep OVERALL $tmpdir/metrics_audiobooks.stdout | awk '{print $4}')
+
+# Score CORE broadcast_interview set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/broadcast_interview.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_broadcast_interview.stdout \
+  2> $tmpdir/metrics_broadcast_interview.stderr
+broadcast_interview_der=$(grep OVERALL $tmpdir/metrics_broadcast_interview.stdout | awk '{print $4}')
+
+# Score CORE clinical set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/clinical.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_clinical.stdout \
+  2> $tmpdir/metrics_clinical.stderr
+clinical_der=$(grep OVERALL $tmpdir/metrics_clinical.stdout | awk '{print $4}')
+
+# Score CORE court set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/court.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_court.stdout \
+  2> $tmpdir/metrics_court.stderr
+court_der=$(grep OVERALL $tmpdir/metrics_court.stdout | awk '{print $4}')
+
+# Score CORE cts set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/cts.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_cts.stdout \
+  2> $tmpdir/metrics_cts.stderr
+cts_der=$(grep OVERALL $tmpdir/metrics_cts.stdout | awk '{print $4}')
+
+# Score CORE maptask set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/maptask.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_maptask.stdout \
+  2> $tmpdir/metrics_maptask.stderr
+maptask_der=$(grep OVERALL $tmpdir/metrics_maptask.stdout | awk '{print $4}')
+
+# Score CORE meeting set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/meeting.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_meeting.stdout \
+  2> $tmpdir/metrics_meeting.stderr
+meeting_der=$(grep OVERALL $tmpdir/metrics_meeting.stdout | awk '{print $4}')
+
+# Score CORE restaurant set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/restaurant.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_restaurant.stdout \
+  2> $tmpdir/metrics_restaurant.stderr
+restaurant_der=$(grep OVERALL $tmpdir/metrics_restaurant.stdout | awk '{print $4}')
+
+# Score CORE socio_field set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/socio_field.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_socio_field.stdout \
+  2> $tmpdir/metrics_socio_field.stderr
+socio_field_der=$(grep OVERALL $tmpdir/metrics_socio_field.stdout | awk '{print $4}')
+
+# Score CORE socio_lab set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/socio_lab.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_socio_lab.stdout \
+  2> $tmpdir/metrics_socio_lab.stderr
+socio_lab_der=$(grep OVERALL $tmpdir/metrics_socio_lab.stdout | awk '{print $4}')
+
+# Score CORE webvideo set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/webvideo.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_webvideo.stdout \
+  2> $tmpdir/metrics_webvideo.stderr
+webvideo_der=$(grep OVERALL $tmpdir/metrics_webvideo.stdout | awk '{print $4}')
 
 
 # Report.
-core_der=$(grep OVERALL $tmpdir/metrics_core.stdout | awk '{print $4}')
-core_jer=$(grep OVERALL $tmpdir/metrics_core.stdout | awk '{print $5}')
-full_der=$(grep OVERALL $tmpdir/metrics_full.stdout | awk '{print $4}')
-full_jer=$(grep OVERALL $tmpdir/metrics_full.stdout | awk '{print $5}')
 echo "$0: ******* SCORING RESULTS *******"
-echo "$0: *** DER (full): ${full_der}"
-echo "$0: *** JER (full): ${full_jer}"
-echo "$0: *** DER (core): ${core_der}"
-echo "$0: *** JER (core): ${core_jer}"
+echo "$0: *** DER (core) - audiobooks:          ${audiobooks_der}"
+echo "$0: *** DER (core) - broadcast_interview: ${broadcast_interview_der}"
+echo "$0: *** DER (core) - clinical:            ${clinical_der}"
+echo "$0: *** DER (core) - court:               ${court_der}"
+echo "$0: *** DER (core) - cts:                 ${cts_der}"
+echo "$0: *** DER (core) - maptask:             ${maptask_der}"
+echo "$0: *** DER (core) - meeting:             ${meeting_der}"
+echo "$0: *** DER (core) - restaurant:          ${restaurant_der}"
+echo "$0: *** DER (core) - socio_field:         ${socio_field_der}"
+echo "$0: *** DER (core) - socio_lab:           ${socio_lab_der}"
+echo "$0: *** DER (core) - webvideo:            ${webvideo_der}"
+echo "------------------------------------------------------------------------------------------"
+echo "$0: *** DER (core) - All:                 ${core_der}"
+
+
 if [ ! -z "scores_dir" ]; then
  echo "$0: ***"
  echo "$0: *** Full results are located at: ${scores_dir}"
 fi
-
 
 # Clean up.
 if [ ! -z "scores_dir" ]; then

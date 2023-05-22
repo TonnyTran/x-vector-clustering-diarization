@@ -241,7 +241,7 @@ def sum_metrics(*metrics):
         if metric.__class__ != cls:
             raise ValueError('All metrics must be of same type.')
         result.results_.extend(metric.results_)
-        result.uris_.update(metric.uris_)
+        # result.uris_.update(metric.uris_)
         for cname in metric.components_:
             result.accumulated_[cname] += metric.accumulated_[cname]
     return result

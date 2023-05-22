@@ -141,3 +141,5 @@ recipes/track2/data/
 recipes/track2/mfcc/
 recipes/track2/exp/
 recipes/track2/log/
+recipes/track2/01.log
+recipes/track2/run_track2.sh
