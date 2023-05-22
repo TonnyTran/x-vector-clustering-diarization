@@ -137,7 +137,7 @@ if [ $stage -le 5 ]; then
   local/diarize.sh \
     --nj $nj --stage $diarization_stage \
     --tune true \
-    pretrained/xvector_nnet_1a/ exp/xvector_nnet_1a/plda_track1 \
+    pretrained/xvector_nnet_1a/ pretrained/xvector_nnet_1a/plda_track1 \
     data/dihard3_dev_seg/ exp/dihard3_diarization_nnet_1a_dev
 fi
 
@@ -149,7 +149,7 @@ if [ $stage -le 6 ]; then
   local/diarize.sh \
     --nj $nj --stage $diarization_stage \
     --thresh $thresh --tune false \
-    pretrained/xvector_nnet_1a/ exp/xvector_nnet_1a/plda_track1 \
+    pretrained/xvector_nnet_1a/ pretrained/xvector_nnet_1a/plda_track1 \
     data/dihard3_eval_seg/ exp/dihard3_diarization_nnet_1a_eval
 fi
 

@@ -6,4 +6,4 @@ cmd="/home3/theanhtran/slurm.pl --quiet --gpu 1" #  --nodelist=node06 --gpu 1
 conda activate xvector_diarization
 
 $cmd log/track2a.log \
-./run.sh
+./run.sh --stage 3
