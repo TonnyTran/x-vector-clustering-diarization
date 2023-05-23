@@ -177,8 +177,8 @@ fi
 ################################################################################
 # Refined first-pass diarization using VB-HMM resegmentation
 ################################################################################
-dubm_model=exp/xvec_init_gauss_1024_ivec_400/model/diag_ubm.pkl
-ie_model=exp/xvec_init_gauss_1024_ivec_400/model/ie.pkl
+dubm_model=pretrained/xvec_init_gauss_1024_ivec_400/model/diag_ubm.pkl
+ie_model=pretrained/xvec_init_gauss_1024_ivec_400/model/ie.pkl
 
 if [ $stage -le 9 ]; then
   echo "$0: Performing VB-HMM resegmentation of DEV..."
