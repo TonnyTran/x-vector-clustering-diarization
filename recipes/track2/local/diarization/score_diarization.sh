@@ -159,6 +159,51 @@ score.py \
   2> $tmpdir/metrics_webvideo.stderr
 webvideo_der=$(grep OVERALL $tmpdir/metrics_webvideo.stdout | awk '{print $4}')
 
+# Score CORE one_spk set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/num_spk/one_spk.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_one_spk.stdout \
+  2> $tmpdir/metrics_one_spk.stderr
+one_spk_der=$(grep OVERALL $tmpdir/metrics_one_spk.stdout | awk '{print $4}')
+
+# Score CORE two_spk set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/num_spk/two_spk.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_two_spk.stdout \
+  2> $tmpdir/metrics_two_spk.stderr
+two_spk_der=$(grep OVERALL $tmpdir/metrics_two_spk.stdout | awk '{print $4}')
+
+# Score CORE three_spk set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/num_spk/three_spk.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_three_spk.stdout \
+  2> $tmpdir/metrics_three_spk.stderr
+three_spk_der=$(grep OVERALL $tmpdir/metrics_three_spk.stdout | awk '{print $4}')
+
+# Score CORE four_spk set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/num_spk/four_spk.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_four_spk.stdout \
+  2> $tmpdir/metrics_four_spk.stderr
+four_spk_der=$(grep OVERALL $tmpdir/metrics_four_spk.stdout | awk '{print $4}')
+
+# Score CORE five_to_ten set.
+score.py \
+  -u $release_dir/data/uem_scoring/core/num_spk/five_to_ten.uem \
+  -r $release_dir/data/rttm/*.rttm \
+  -s $rttm_dir/*.rttm \
+  >  $tmpdir/metrics_five_to_ten.stdout \
+  2> $tmpdir/metrics_five_to_ten.stderr
+five_to_ten_der=$(grep OVERALL $tmpdir/metrics_five_to_ten.stdout | awk '{print $4}')
+
 
 # Report.
 echo "$0: ******* SCORING RESULTS *******"
@@ -173,7 +218,13 @@ echo "$0: *** DER (core) - restaurant:          ${restaurant_der}"
 echo "$0: *** DER (core) - socio_field:         ${socio_field_der}"
 echo "$0: *** DER (core) - socio_lab:           ${socio_lab_der}"
 echo "$0: *** DER (core) - webvideo:            ${webvideo_der}"
-echo "------------------------------------------------------------------------------------------"
+echo "---------------------------------------------------------------------------"
+echo "$0: *** DER (core) - one_spk:             ${one_spk_der}"
+echo "$0: *** DER (core) - two_spk:             ${two_spk_der}"
+echo "$0: *** DER (core) - three_spk:           ${three_spk_der}"
+echo "$0: *** DER (core) - four_spk:            ${four_spk_der}"
+echo "$0: *** DER (core) - five_to_ten:         ${five_to_ten_der}"
+echo "----------------------------------------------------------------------------"
 echo "$0: *** DER (core) - All:                 ${core_der}"
 
 
