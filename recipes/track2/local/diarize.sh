@@ -125,7 +125,7 @@ if [ $stage -le 3 ]; then
 
   # Use specified PLDA model + whitening computed from actual xvectors.
   plda_model_dir=$out_dir/plda
-  mkdir $plda_model_dir
+  mkdir -p $plda_model_dir
   cp $plda_path $plda_model_dir/plda
   cp $out_dir/xvectors/{mean.vec,transform.mat} $plda_model_dir
   local/diarization/nnet3/xvector/score_plda.sh \

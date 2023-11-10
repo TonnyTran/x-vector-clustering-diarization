@@ -161,7 +161,7 @@ if [ $stage -le 1 ]; then
 	--trainer.optimization.num-jobs-final=$num_jobs_final \
 	--trainer.optimization.initial-effective-lrate=$initial_effective_lrate \
 	--trainer.optimization.final-effective-lrate=$final_effective_lrate \
-	--trainer.rnn.num-chunk-per-minibatch=64,32 \
+	--trainer.rnn.num-chunk-per-minibatch=32,32 \
 	--trainer.optimization.momentum=0.5 \
 	--trainer.deriv-truncate-margin=10 \
 	--trainer.max-param-change=$max_param_change \
