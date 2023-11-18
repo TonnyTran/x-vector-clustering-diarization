@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Score SAD system output.
 
 To evaluate system output against reference speech segmentation, run:

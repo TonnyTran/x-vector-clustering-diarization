@@ -14,7 +14,7 @@ nj=50
 #   1:  extract MFCCs for whole recordings
 #   2:  prepare targets for SAD training
 #   3:  train model
-stage=0
+stage=3
 
 # Stage to start neural network training prep from:
 #
@@ -75,6 +75,7 @@ fi
 # Extract features for the whole data directory. We extract 40-D MFCCs.
 ###############################################################################
 if [ $stage -le 1 ]; then
+    echo "1. Extract features for the whole data directory. We extract 40-D MFCCs...."
     steps/make_mfcc.sh \
 	--nj $nj --cmd "$train_cmd"  \
 	--mfcc-config conf/mfcc_sad.conf --write-utt2num-frames true \
@@ -90,6 +91,7 @@ fi
 mkdir -p $dir
 targets_dir=exp/${whole_data_id}_sad_targets
 if [ $stage -le 2 ]; then
+  echo "2. Prepare SAD targets for recordings..."
   local/segmentation/prepare_sad_targets.py \
       --frame-step 0.010 \
       --subsampling-factor 3 \
@@ -101,6 +103,7 @@ fi
 # Train a neural network for SAD
 ###############################################################################
 if [ $stage -le 3 ]; then
+    echo "3. Train a STATS-pooling network for SAD..."
     # Train a STATS-pooling network for SAD
     local/segmentation/train_stats_sad_1a.sh \
 	--stage $nstage --train-stage $train_stage \

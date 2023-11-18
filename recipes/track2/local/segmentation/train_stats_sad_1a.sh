@@ -65,7 +65,8 @@ dir=          # Output directory for trained model.
 ###############################################################################
 # Path and other checks
 ###############################################################################
-. ./cmd.sh
+# export decode_cmd="/home3/theanhtran/slurm.pl --quiet --gpu 1"
+. ./././cmd.sh
 if [ -f ./path.sh ]; then . ./path.sh; fi
 . ./utils/parse_options.sh
 
@@ -139,9 +140,10 @@ if [ $stage -le 1 ]; then
     num_utts_subset=1
 
     # Train. Apologies for so many command-line flags.
+    echo "Train. $decode_cmd"
     steps/nnet3/train_raw_rnn.py \
 	--stage=$train_stage \
-	--cmd="$decode_cmd" --nj $nj \
+	--cmd="$decode_cmd"\
 	--use-gpu=true \
 	--dir=$dir \
 	--feat-dir=$data_dir --feat.cmvn-opts="$cmvn_opts" \
@@ -161,7 +163,7 @@ if [ $stage -le 1 ]; then
 	--trainer.optimization.num-jobs-final=$num_jobs_final \
 	--trainer.optimization.initial-effective-lrate=$initial_effective_lrate \
 	--trainer.optimization.final-effective-lrate=$final_effective_lrate \
-	--trainer.rnn.num-chunk-per-minibatch=32,32 \
+	--trainer.rnn.num-chunk-per-minibatch=64,32 \
 	--trainer.optimization.momentum=0.5 \
 	--trainer.deriv-truncate-margin=10 \
 	--trainer.max-param-change=$max_param_change \
@@ -171,7 +173,7 @@ if [ $stage -le 1 ]; then
 	--cleanup.preserve-model-interval=10
 fi
 
-
+#--trainer.rnn.num-chunk-per-minibatch=128,64 \
 
 ###############################################################################
 # Estimate class posteriors for use in generating pseudo likelihoods

@@ -5,5 +5,5 @@ cmd="/home3/theanhtran/slurm.pl --quiet --gpu 1 --nodelist=node08" #  --nodelist
 . /home3/theanhtran/env/anaconda/etc/profile.d/conda.sh
 conda activate xvector_diarization
 
-$cmd log/track2_v2b.log \
-./run.sh --stage 5
+$cmd log/track2_v5.log \
+./run.sh --stage 0
